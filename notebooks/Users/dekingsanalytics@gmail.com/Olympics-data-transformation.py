@@ -24,11 +24,11 @@ extra_configs = configs)
 
 # COMMAND ----------
 
-athletes = spark.read.format("csv").option("header","true").load("/mnt/olymic/raw-data/athletes.csv")
-coaches = spark.read.format("csv").option("header","true").load("/mnt/olymic/raw-data/coaches.csv")
-gender = spark.read.format("csv").option("header","true").load("/mnt/olymic/raw-data/gender.csv")
-medal = spark.read.format("csv").option("header","true").load("/mnt/olymic/raw-data/medal.csv")
-team = spark.read.format("csv").option("header","true").load("/mnt/olymic/raw-data/team.csv")
+athletes = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/mnt/olymic/raw-data/athletes.csv")
+coaches = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/mnt/olymic/raw-data/coaches.csv")
+gender = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/mnt/olymic/raw-data/gender.csv")
+medal = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/mnt/olymic/raw-data/medal.csv")
+team = spark.read.format("csv").option("header","true").option("inferSchema","true").load("/mnt/olymic/raw-data/team.csv")
 
 # COMMAND ----------
 
@@ -56,9 +56,18 @@ gender.printSchema()
 
 # COMMAND ----------
 
-gender = gender.withColumn("Female",col("Female").cast(IntegerType()))\
-    .withColumn("Male",col("Male").cast(IntegerType()))\
-    .withColumn("Total",col("Total").cast(IntegerType()))
+percentage_average_by_gender = gender.withColumn(
+    'Avg_Female', gender['Female'] / gender['Total'] * 100
+).withColumn(
+    'Avg_Male', gender['Male'] / gender['Total'] * 100
+)
+percentage_average_by_gender.show()
+
+# COMMAND ----------
+
+# gender = gender.withColumn("Female",col("Female").cast(IntegerType()))\
+#     .withColumn("Male",col("Male").cast(IntegerType()))\
+#     .withColumn("Total",col("Total").cast(IntegerType()))
 
 # COMMAND ----------
 
@@ -74,6 +83,11 @@ medal.printSchema()
 
 # COMMAND ----------
 
-medal = medal.withColumn("Female",col("Female").cast(IntegerType()))\
-    .withColumn("Male",col("Male").cast(IntegerType()))\
-    .withColumn("Total",col("Total").cast(IntegerType()))
+team.printSchema()
+
+# COMMAND ----------
+
+team.show()
+
+# COMMAND ----------
+
