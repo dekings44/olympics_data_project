@@ -91,3 +91,13 @@ team.show()
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC **Loading the data into Azure Data Lake Gen 2**
+
+# COMMAND ----------
+
+athletes.repartition(1).write.mode("overwrite").option("header",'true').csv("/mnt/olymic/transformed-data/athletes")
+coaches.repartition(1).write.mode("overwrite").option("header","true").csv("/mnt/olymic/transformed-data/coaches")
+gender.repartition(1).write.mode("overwrite").option("header","true").csv("/mnt/olymic/transformed-data/gender")
+medal.repartition(1).write.mode("overwrite").option("header","true").csv("/mnt/olymic/transformed-data/medal")
+team.repartition(1).write.mode("overwrite").option("header","true").csv("/mnt/olymic/transformed-data/team")
